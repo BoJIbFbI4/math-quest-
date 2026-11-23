@@ -16,15 +16,13 @@ Then open http://localhost:8080.
 
 ## Play on the iPad
 
-1. On the Mac, run `./serve.sh`. It prints the iPad address, for example `http://your-mac-name.local:8080`. The first time, macOS may ask to allow incoming connections for Python; click Allow.
-2. On the iPad (same Wi-Fi), open that address in Safari.
-3. Tap Share → **Add to Home Screen**, and from then on open it **only from that icon**. It runs full screen, and Safari keeps a Home Screen app's data instead of clearing it after 7 days unused. The icon has its own storage, separate from a Safari tab, so stars earned in a Safari tab don't show up in the icon.
+Open **https://bojibfbi4.github.io/math-quest-/** in Safari, then tap Share → **Add to Home Screen**. From then on, open it **only from that icon**: it runs full screen, works without the Mac, and Safari keeps a Home Screen app's data instead of clearing it after 7 days unused. The icon has its own storage, separate from a Safari tab, so stars earned in a Safari tab don't show up in the icon.
 
-Progress is saved on each device separately and is tied to the exact address, so always use the same `.local` name and port. The Mac must be awake and serving while she plays. To move progress between devices, use **Grown-ups → Backup code**.
+The site is served by GitHub Pages from the `main` branch. After a change is merged, GitHub needs a minute or two to deploy it, and the iPad may keep the old files for up to 10 minutes. If something looks half-updated, close the app and open it again after a few minutes.
 
-`serve.sh` tells the iPad not to cache files, so after you change or add content she gets the new version on the next launch.
+Progress is saved on each device separately and is tied to the exact address. To move progress between devices or addresses, use **Grown-ups → Backup code**.
 
-To have it available without the Mac, put this folder on any HTTPS static host (for example GitHub Pages).
+**Without internet:** the Mac can serve the game on the home Wi-Fi. Run `./serve.sh` on the Mac and open the `.local` address it prints in Safari on the iPad. The first time, macOS may ask to allow incoming connections for Python; click Allow. That address keeps its own progress, separate from the GitHub one.
 
 ## Grown-ups zone
 
