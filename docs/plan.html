@@ -1,0 +1,269 @@
+<title>Math Quest Build Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; a ten-frame motif marks the five levels; tables scroll in their own box. */
+:root {
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --fg: #1c2333;
+  --muted: #5b6478;
+  --line: #dde3ee;
+  --accent: #2463d6;
+  --sun: #f0a500;
+  --good: #1f8a4c;
+  --warn: #b5541c;
+  --chip: #e8eefb;
+  --display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151f; --panel: #1a2030; --fg: #e6e9f2; --muted: #9aa3b8; --line: #2c3447;
+  --accent: #7aa7ff; --sun: #ffc34d; --good: #5fd08f; --warn: #ff9e6b; --chip: #24304a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11151f; --panel: #1a2030; --fg: #e6e9f2; --muted: #9aa3b8; --line: #2c3447;
+  --accent: #7aa7ff; --sun: #ffc34d; --good: #5fd08f; --warn: #ff9e6b; --chip: #24304a; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 64px }
+main { max-width: 920px; margin: 0 auto }
+header { padding-block: 40px 8px }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0 }
+h1 { font-size: clamp(2rem, 5vw, 2.9rem); font-weight: 800 }
+h2 { font-size: 1.6rem; font-weight: 800; margin-top: 48px; padding-top: 16px; border-top: 2px solid var(--line) }
+h3 { font-size: 1.15rem; font-weight: 600; margin-top: 24px }
+p, li { max-width: 68ch }
+.lede { font-size: 1.1rem; color: var(--muted) }
+.eyebrow { font: 600 .75rem/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--accent) }
+a { color: var(--accent) }
+code, .mono { font-family: var(--mono); font-size: .88em; background: var(--chip); padding: 1px 5px; border-radius: 4px }
+pre { font-family: var(--mono); font-size: .82rem; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px; overflow-x: auto; line-height: 1.5 }
+.scroll { overflow-x: auto; margin-block: 12px }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .92rem }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line) }
+th { font-weight: 600; color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .05em }
+td:first-child { font-weight: 600 }
+.frame { display: inline-grid; grid-template-columns: repeat(5, 12px); gap: 3px; padding: 4px; border: 2px solid var(--line); border-radius: 6px; vertical-align: middle; margin-right: 8px }
+.frame i { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--line) }
+.frame i.on { background: var(--sun); border-color: var(--sun) }
+.pill { display: inline-block; font: 600 .72rem/1 var(--body); padding: 4px 8px; border-radius: 99px; background: var(--chip); color: var(--accent); white-space: nowrap }
+.pill.good { color: var(--good) } .pill.warn { color: var(--warn) }
+.ladder { display: grid; gap: 10px; margin-block: 16px; padding: 0; list-style: none }
+.ladder li { display: grid; grid-template-columns: 120px 1fr; gap: 12px; align-items: start; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; max-width: none }
+.ladder b { font-family: var(--display); font-size: 1.05rem }
+@media (max-width: 560px) { .ladder li { grid-template-columns: 1fr } }
+.checklist { list-style: none; padding: 0 }
+.checklist li { padding-left: 28px; position: relative; margin-block: 6px }
+.checklist li::before { content: ""; position: absolute; left: 0; top: 5px; width: 16px; height: 16px; border: 2px solid var(--accent); border-radius: 4px }
+.note { border-left: 4px solid var(--sun); background: var(--panel); padding: 12px 16px; border-radius: 0 8px 8px 0; margin-block: 16px }
+.src { font-size: .88rem; color: var(--muted) }
+.src li { margin-block: 4px }
+</style>
+
+<main>
+<header>
+  <div class="eyebrow">Plan · v1 · 22 Nov 2026</div>
+  <h1>Math Quest: a typing-only maths trainer for a 2nd grader</h1>
+  <p class="lede">An offline web game for Mac and iPad with 6 topics × 5 levels, picture-based help that never gives the answer away, celebrations for right answers, and RU / EN / IT. It has no third-party code at all.</p>
+</header>
+
+<h2>Build status · 22 Nov 2026</h2>
+<p>The game is built at <code>~/_projects/math-quest</code>, with all 6 topics × 5 levels in 3 languages.</p>
+<div class="scroll"><table>
+<tr><th>Check</th><th>Result</th></tr>
+<tr><td>Unit tests (<code>node --test</code>)</td><td><span class="pill good">60 / 60 pass</span> 400 problems per topic and level: answers, level rules, steps, no answer printed in help. Also round engine, locks, re-asks, stars, unlocks, saving, backup codes, language key parity, Russian plurals, story grammar, no network calls. A deliberate break of a generator and a missing translation made 3 tests fail, so the tests do catch real errors.</td></tr>
+<tr><td>Browser playthrough at iPad size (1180×820 landscape, 820×1180 portrait)</td><td><span class="pill good">done</span> Full rounds to the end screen, including a new sticker; wrong → picture → steps → reveal → re-ask; the "slow down" lock on fast guesses; stars and unlock; locked-level message; RU / EN / IT; story problems; blocks, number line, groups; stickers and buddy; grown-ups gate; parent zone (name, restore with good and bad code, reset); hardware keyboard (digits, Backspace, Enter); no console errors. In the worst portrait case (picture and steps both open) the pad stays on screen and the problem area scrolls.</td></tr>
+<tr><td><code>./serve.sh</code></td><td><span class="pill good">done</span> Reached at <code>http://&lt;mac&gt;.local:8080</code> and sends <code>Cache-Control: no-cache</code>, so the iPad never mixes old and new files after an update.</td></tr>
+<tr><td>Opening <code>index.html</code> by double-click</td><td><span class="pill good">Chrome ok</span> Safari not checked by hand. The CSP tag was removed so Safari's <code>file://</code> rules can't blank the page.</td></tr>
+<tr><td>Real WebKit (iPad Safari)</td><td><span class="pill warn">not verified</span> This Mac has no Xcode, so no iPad simulator. Untested on a real iPad: touch double-tap on keys, the press-and-hold gate, sounds and read-aloud voices. The first session on the iPad is the real test.</td></tr>
+</table></div>
+<p><b>Changes from the plan:</b> no service worker, since it only works on HTTPS and the iPad uses the Mac over Wi-Fi. "1 × n" problems show the picture only, because "1 group of 7" would print the answer. The "5 groups + the rest" split is shown only for times tables. No Esc key. Stored review problems are validated, and any that can't be drawn are skipped. "Count the blocks" became "What number do the blocks show?", since a literal child would count only the small cubes.</p>
+
+<h2>1. What was asked, and how each ask is met</h2>
+<p>Every sentence of the request is mapped to a design decision and to the check that proves it.</p>
+<div class="scroll"><table>
+<tr><th>Request</th><th>Design decision</th><th>Verified by</th></tr>
+<tr><td>Math game for a 7-year-old, 2nd grade, needs a lot of training</td><td>Curriculum built from Common Core 2.OA / 2.NBT plus the Russian and Italian 2nd-grade programmes (numbers to 100, mental + / − with and without regrouping, times tables). Short 10-problem rounds, unlimited replays, a review queue that brings mistakes back.</td><td>Generator unit tests per topic × level; playthrough</td></tr>
+<tr><td>Visual compliments when right</td><td>Confetti burst, star flies into the progress bar, buddy jumps, praise for effort in her language, chime. Bigger party on 3 and 5 in a row and at the end of a round.</td><td>Browser playthrough</td></tr>
+<tr><td>Visualisation when wrong</td><td>Feedback ladder (§3): picture model of the problem → strategy steps with the last step blank → worked solution on the 3rd miss. Targeted tips for known bugs (forgot the carried ten, subtracted the smaller digit from the larger).</td><td>Unit tests for misconception detectors; playthrough</td></tr>
+<tr><td>She guesses or peeks; must type answers</td><td>No multiple choice anywhere. On-screen number pad plus hardware keys, explicit ✓ press, answer never shown before the 3rd miss, no "higher / lower" hints, input lock after a wrong answer that grows on fast repeat guesses, only clean first tries count toward stars.</td><td>Unit tests on session engine; playthrough</td></tr>
+<tr><td>Help button that visualises without giving the answer</td><td>💡 button: 1st press shows the countable model (ten frames, base-ten blocks, number line, arrays, pictures) with no total printed; 2nd press shows strategy steps ending in "?".</td><td>Viz unit tests (no answer text in hint SVG)</td></tr>
+<tr><td>Levels, start with 5</td><td>Every topic has exactly 5 levels. Level N+1 unlocks at 2 stars on level N. Parent can unlock everything.</td><td>Unit tests on unlock logic</td></tr>
+<tr><td>Languages RU, EN, IT</td><td>All UI text, praise, word problems and read-aloud in 3 languages; feminine forms for a girl (switchable); per-locale operator glyphs (RU · and :, IT × and :, EN × and ÷).</td><td>Key-parity test; Russian plural test</td></tr>
+<tr><td>Research best practices</td><td>Findings in §2 with sources; each one feeds a rule in §3–§6.</td><td>This document</td></tr>
+<tr><td>Scalable, add content over time</td><td>A topic is one JS file that registers a generator for 5 levels; visuals are a shared library; strings live per language. Adding a topic = 1 file + 1 script tag + strings.</td><td>README "Add a topic" recipe; tests cover every registered topic automatically</td></tr>
+<tr><td>Runs on Mac and iPad</td><td>Plain HTML/CSS/JS, classic scripts (works from a double-click on <code>file://</code>), Add-to-Home-Screen manifest, touch-first layout, served to the iPad over the home Wi-Fi from the Mac.</td><td>Browser pane at desktop + iPad size; iPad simulator (WebKit)</td></tr>
+<tr><td>Well-known tech, validate libraries, supply-chain risk</td><td>Zero dependencies: no npm, no CDN, no fonts from the web, no analytics. Tests use Node's built-in <code>node --test</code>. Sound is synthesised with Web Audio; confetti and pictures are hand-made canvas / SVG.</td><td><code>grep</code> for external URLs in the game = none</td></tr>
+</table></div>
+
+<h2>2. What the research says</h2>
+<h3>Feedback must explain, with pictures</h3>
+<p>Feedback that only says right/wrong is the most common weakness of maths apps; it should be visual and show quantities so the child sees why. Progressive hints that let the child reach the answer keep them engaged. In a study of 193 children, the game features tied to gains were accuracy feedback, multiple attempts, hints and progressive levels. For young students, elaborated feedback beats accuracy-only feedback.</p>
+<h3>Concrete → pictorial → abstract</h3>
+<p>2nd-grade strategies are counting on, making ten (8 + 6 = 8 + 2 + 4), decomposing (13 − 4 = 13 − 3 − 1) and place value with base-ten blocks, where 10 ones become 1 ten. Ten frames show teen numbers as "one full ten plus some"; number lines show jumps. The game uses these exact models.</p>
+<h3>Gaming the system is real and costly</h3>
+<p>In tutoring software, systematic guessing and hint abuse are the classic patterns, and students who game a lot learned only about ⅔ as much. Less gaming fully mediated the learning gains of a maths game. Detection uses fast repeated wrong answers and hint-until-answer patterns, so the game blocks both by design (§3).</p>
+<h3>Praise the process</h3>
+<p>Process praise ("you kept trying") leads to more persistence after failure than person praise ("you're smart"), and person-focused responses are linked to maths anxiety. The praise lines are written about effort and strategy.</p>
+<h3>Retrieval + spacing for facts</h3>
+<p>Flashcard-style retrieval beat restudying for 2nd graders learning multiplication; missed facts should come back in later sessions; keep sessions short and frequent. The game uses 10-problem rounds and re-queues misses within the round and across rounds.</p>
+<h3>Touch targets and iPad storage</h3>
+<p>Young children miss small targets far more often than adults; NN/g suggests about 2 cm targets. Keys are at least 72 px. Safari deletes website storage after 7 days without a visit, but apps added to the Home Screen keep their own counter, so the iPad setup is "Add to Home Screen" plus a backup code in the parent zone.</p>
+<h3>Curriculum anchors</h3>
+<p>US: fluency within 20 and within 100 using place value (2.OA.B.2, 2.NBT.B.5). Russia: oral + / − within 100 with and without crossing a ten; the order of the times table varies by textbook. Italy: numbers to 100, skip counting, tables up to 10 in classes 2–3.</p>
+
+<h2>3. The learning loop for one problem</h2>
+<ol class="ladder">
+<li><b>Problem</b><div>A big equation or a short story with the blank as a box. She types on the pad and presses ✓. 🔊 reads it aloud. 💡 opens help.</div></li>
+<li><b>Right, 1st try</b><div>Celebration, star, sound, next problem after about 1.2 s. Counts as <span class="pill good">clean</span> only if no help was used.</div></li>
+<li><b>Wrong #1</b><div>Gentle wobble, "Not yet, look at the picture". The model opens. If the error matches a known bug, a one-line tip ("Did you add the extra ten?"). The pad locks for 1.5 s and the box clears.</div></li>
+<li><b>Wrong #2</b><div>Strategy steps appear with the last step blank: <code>8 + 2 = 10</code>, <code>10 + 3 = ?</code>. Lock for 2.5 s.</div></li>
+<li><b>Wrong #3</b><div>Worked solution is shown and animated. "Let's remember it." The same problem comes back 3 problems later and is saved to the review list for the next rounds.</div></li>
+</ol>
+<div class="note"><b>Anti-guessing rules.</b> No multiple choice. No length limit tied to the answer. No "too big / too small". Two wrong answers in under 2 s each extend the lock to 4 s with a "Slow down and think" turtle. Help never prints the answer, only countable pictures and steps ending in "?". Stars come only from clean first tries, so peeking at help costs stars but never blocks progress.</div>
+
+<h2>4. Curriculum: 6 topics × 5 levels</h2>
+<p><span class="frame"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Each level is a parameter set for that topic's generator. Build order: Addition and Subtraction first as the full vertical slice, then the rest.</p>
+<div class="scroll"><table>
+<tr><th>Topic</th><th>L1</th><th>L2</th><th>L3</th><th>L4</th><th>L5</th><th>Picture model</th></tr>
+<tr><td>➕ Addition</td><td>sum ≤ 10</td><td>within 20, no crossing ten (12 + 5)</td><td>crossing ten (8 + 5)</td><td>2-digit + 1/2-digit, no regrouping (34 + 25)</td><td>2-digit + 2-digit with regrouping (47 + 38)</td><td>ten frames; base-ten blocks</td></tr>
+<tr><td>➖ Subtraction</td><td>within 10</td><td>within 20, no crossing (17 − 5)</td><td>crossing ten (13 − 5)</td><td>2-digit, no regrouping (68 − 23)</td><td>with regrouping (52 − 27)</td><td>crossed-out dots; blocks with a ten broken into ones</td></tr>
+<tr><td>🔍 Missing number</td><td>3 + ? = 8</td><td>? + 6 = 14</td><td>15 − ? = 9</td><td>30 + ? = 70, 46 + ? = 50</td><td>? − 18 = 25 and mixed</td><td>number line with a "?" jump; part-part-whole bar</td></tr>
+<tr><td>🧱 Tens &amp; ones</td><td>count the blocks (≤ 50)</td><td>6 tens 3 ones = ?</td><td>how many tens / ones in 74?</td><td>10 more / 10 less</td><td>hundreds, tens, ones (to 999, with zeros)</td><td>base-ten blocks</td></tr>
+<tr><td>✖️ Times tables</td><td>×2, ×10</td><td>×5, ×3</td><td>×4, ×6</td><td>×7, ×8, ×9</td><td>all 2–10 mixed</td><td>dot arrays in equal groups</td></tr>
+<tr><td>📖 Story problems</td><td>add, within 10</td><td>take away, within 20</td><td>"how many more", within 20</td><td>add / take away, within 100</td><td>equal groups (×)</td><td>emoji pictures; bar model</td></tr>
+</table></div>
+
+<h3>Scoring, unlocks, rewards</h3>
+<ul>
+<li><b>Round</b>: 10 problems (parent can pick 5 / 10 / 15 / 20). Re-asks of failed problems are extra and don't change the score.</li>
+<li><b>Stars</b> from clean first tries: ≥ 90% → ★★★, ≥ 70% → ★★, ≥ 50% → ★. Best result per level is kept.</li>
+<li><b>Unlock</b>: level N+1 opens at ★★ on level N. Level 1 of every topic is always open.</li>
+<li><b>Sticker book</b>: every 5 stars earned (all rounds, repeats included, so practice pays) unlocks a new sticker; any sticker can be picked as her buddy on the home screen.</li>
+<li><b>Review list</b>: per topic-level, up to 30 missed problems; up to 3 are mixed into the next round; a clean answer removes it.</li>
+</ul>
+
+<h2>5. Screens and iPad details</h2>
+<ul>
+<li><b>Home</b>: buddy with greeting, 6 topic cards with star counts, sticker book, language chips RU · EN · IT, parent gear.</li>
+<li><b>Levels</b>: 5 stops on a path, locked ones show a lock, stars under each.</li>
+<li><b>Play</b>: back, 10 progress dots, streak flame; problem card; answer box; 3 × 4 pad (1–9, ⌫, 0, ✓); 💡 and 🔊.</li>
+<li><b>Round end</b>: stars animate in, "clean x / 10", new sticker reveal, Again / Next level / Home.</li>
+<li><b>Parent zone</b> behind a gate (hold 2 s, then type the answer to a 2-digit × 1-digit problem): name, girl/boy wording, language, sound, read-aloud, round length, unlock all, per-level stats, "trouble spots" (most-missed problems), backup / restore code, reset with an in-page confirm.</li>
+<li><b>iPad</b>: no focusable inputs (no iOS keyboard, no zoom, no suggestions), <code>touch-action: manipulation</code>, no text selection or long-press callout, safe-area padding, <code>100dvh</code> layout that works in portrait and landscape, keys ≥ 72 px, Home-Screen manifest + 180 px icon, sound unlocked on first tap, <code>prefers-reduced-motion</code> respected.</li>
+<li><b>Mac</b>: digits, Backspace and Enter on a hardware keyboard.</li>
+</ul>
+
+<h2>6. Architecture</h2>
+<p>No build step. Classic <code>&lt;script&gt;</code> tags share one global namespace <code>MQ</code>, so the game runs from <code>file://</code> as well as from a web server. Content is data in JS, never fetched JSON.</p>
+<pre>math-quest/
+  index.html              screens + script tags (load order matters)
+  manifest.webmanifest    Home-Screen app
+  icons/                  icon.svg, icon-180.png, icon-512.png
+  css/app.css
+  js/core.js              MQ namespace, seeded RNG, topic registry, helpers
+  js/i18n/{en,ru,it}.js   strings, praise, story templates, plural rules
+  js/viz.js               SVG models: tenframes, blocks, numberline, bar, groups, pictures
+  js/topics/*.js          add, sub, missing, place, mul, story
+  js/session.js           pure round engine: queue, attempts, locks, scoring, review
+  js/store.js             localStorage with try/catch, schema version, backup code
+  js/fx.js                Web Audio sounds, confetti canvas, speech synthesis
+  js/app.js               screens and input
+  tests/*.test.js         node --test, zero deps
+  serve.sh                LAN server for the iPad (python3 http.server)
+  README.md               run, iPad setup, add content</pre>
+
+<h3>Topic contract</h3>
+<pre>MQ.topic({
+  id: 'add', icon: '➕', hue: 210,
+  gen(level, rng) {               // level 1..5, rng = seeded
+    return {
+      key: '8+5',                 // stable id for review list and no-repeat
+      q: { kind: 'eq', parts: [8, '+', 5, '=', '?'] },   // or kind 'text' | 'story' | 'viz'
+      answer: 13,
+      viz: { type: 'tenframes', a: 8, b: 5, op: '+' },   // countable, no total
+      steps: [[8, '+', 2, '=', 10], [10, '+', 3, '=', '?']]
+    };
+  },
+  diagnose(p, given) { return given === p.answer - 10 ? 'tip.carry' : null; }
+});</pre>
+<p>Problems are plain data, so they can be stored in the review list and re-rendered in any language. Steps are language-neutral token lists; word tokens like <code>{w: 'tens', n: 6}</code> are translated at render time.</p>
+
+<h3>Saved data</h3>
+<pre>localStorage['mathquest.v1'] = {
+  v: 1, lang: 'ru', name: '', gender: 'f', buddy: '🦉',
+  settings: { sound: true, speech: true, roundLen: 10, unlockAll: false },
+  levels: { 'add:3': { best: 2, plays: 4, clean: 31, total: 40, last: 1763800000000 } },
+  review: { 'add:3': [ problem, … ] },
+  stars: 27                      // lifetime; stickers derive from it
+}</pre>
+
+<h2>7. Delivery</h2>
+<ul>
+<li><b>Mac</b>: double-click <code>index.html</code>, or run <code>./serve.sh</code> and open <code>http://localhost:8080</code>.</li>
+<li><b>iPad, now</b>: the Mac runs <code>./serve.sh</code>; on the iPad open <code>http://&lt;mac-name&gt;.local:8080</code> in Safari → Share → Add to Home Screen. Use the <code>.local</code> name, not an IP, because progress is stored per address. Needs the Mac awake on the same Wi-Fi.</li>
+<li><b>iPad, always-on (later, needs your OK)</b>: put the same folder on a free HTTPS static host such as GitHub Pages; then a service worker can make it fully offline. Not done automatically because it publishes something.</li>
+</ul>
+
+<h2>8. Verification</h2>
+<ul class="checklist">
+<li>Every topic × level × 300 seeds: integer answer, within the level's range, no negatives, regrouping exactly when the level says, equation tokens evaluate to the answer.</li>
+<li>No repeats back-to-back within a round; review items mixed in.</li>
+<li>Hint models never contain the answer as text.</li>
+<li>Misconception detectors fire on the bug answers and not on the right answer.</li>
+<li>i18n: same keys in RU / EN / IT; story templates render with no <code>undefined</code> for both genders; Russian plurals for 1, 2, 5, 11, 21, 22, 25.</li>
+<li>Session engine: locks, attempts, star thresholds, unlock at ★★, lifetime stars.</li>
+<li>Store: corrupt or missing data falls back to defaults; backup code round-trips.</li>
+<li>Every <code>js/</code> file is loaded by <code>index.html</code>; no external URL anywhere in the game.</li>
+<li>Browser playthrough at desktop and iPad size: full round, wrong path to the 3rd miss, hint ladder, language switch, parent zone, reload keeps progress, console clean.</li>
+<li>iPad simulator (real WebKit): round played, no zoom on double-tap, no keyboard pop-up, layout fits portrait and landscape.</li>
+</ul>
+
+<h2>9. Build order</h2>
+<ol>
+<li>Core, store, i18n skeleton, session engine with tests.</li>
+<li>Addition + Subtraction (all 5 levels) with ten frames and blocks: the vertical slice, checked at iPad size.</li>
+<li>Feedback ladder, celebrations, sounds, read-aloud.</li>
+<li>Missing number, Tens &amp; ones, Times tables, Story problems.</li>
+<li>Levels map, round end, sticker book, parent zone.</li>
+<li>Manifest, icons, <code>serve.sh</code>, README.</li>
+<li>Full test pass, browser playthrough, iPad simulator check, update §1.</li>
+</ol>
+
+<h2>10. Assumptions made while you were away</h2>
+<ul>
+<li>She's a girl, so Russian and Italian use feminine forms by default ("справилась", "Brava"); a parent switch changes it.</li>
+<li>Times tables are in scope at 2nd grade (Italian and some Russian programmes include them); if her school hasn't started them, the topic stays at level 1 or can be ignored.</li>
+<li>No timers or speed pressure; speed only matters for blocking guess-spam.</li>
+<li>One child profile. A second profile is a small later change.</li>
+<li>No hosting on the internet without your OK.</li>
+<li>Russian multiplication is written <code>3 · 4</code> and division <code>8 : 2</code>, as in Russian schools. If her school writes ×, change one line (<code>ops</code>) in <code>js/i18n/ru.js</code>.</li>
+<li>Repeating an easy level still earns stars toward stickers. This rewards practice, but she can farm Level 1; say if stickers should need harder levels.</li>
+</ul>
+
+<h2>11. Later content</h2>
+<ul>
+<li>Division as sharing (RU "деление", IT "divisione") with the same group pictures.</li>
+<li>Comparing numbers (needs a typed format, such as "type the bigger number" with distractors that can't be brute-forced).</li>
+<li>Money, clocks and time, length in cm, even/odd, skip-counting patterns.</li>
+<li>Daily goal and streak calendar, second profile, fully offline hosting.</li>
+</ul>
+
+<h2>Sources</h2>
+<ul class="src">
+<li><a href="https://tpea.ac.uk/from-play-to-proficiency-numberclubs-three-principles-for-effective-maths-game-design/">NumberClub: three principles for effective maths game design</a></li>
+<li><a href="https://www.edweek.org/teaching-learning/6-components-of-effective-math-games/2023/11">EdWeek: 6 components of effective math games</a></li>
+<li><a href="https://researchprofiles.canberra.edu.au/en/publications/how-design-features-in-digital-math-games-support-learning-and-ma/">How design features in digital math games support learning (193 children)</a></li>
+<li><a href="https://www.cs.cmu.edu/~rsbaker/USER475.pdf">Baker et al.: detecting gaming the system</a> · <a href="https://learninganalytics.upenn.edu/ryanbaker/ST&amp;D23_Zhang.pdf">Zhang et al.: gaming and the Decimal Point game</a></li>
+<li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3655123">Gunderson et al.: parent praise and children's motivation</a> · <a href="https://news.uga.edu/?p=82653">UGA: how parents talk about math</a></li>
+<li><a href="https://research.ou.nl/en/publications/the-effect-of-retrieval-practice-on-fluently-retrieving-multiplic/">Retrieval practice for multiplication facts (2nd graders)</a> · <a href="https://www.edweek.org/teaching-learning/kids-need-to-know-their-math-facts-what-schools-can-do-to-help/2023/05">EdWeek: math facts and spacing</a></li>
+<li><a href="https://educate.iowa.gov/media/12067/download">Iowa: grade 2 strategies</a> · <a href="https://fcit.usf.edu/mathvids/strategies/cra.html">MathVIDS: concrete-representational-abstract</a> · <a href="https://scholastic.com/parents/school-success/learning-toolkit-blog/addition-and-subtraction-models-and-strategies.html">Scholastic: addition and subtraction models</a></li>
+<li><a href="https://par.nsf.gov//servlets/purl/10443558">Subtraction bugs and elaborated feedback</a></li>
+<li><a href="https://www.nngroup.com/articles/children-ux-physical-development/">NN/g: children's UX and touch targets</a></li>
+<li><a href="https://developer.apple.com/forums/thread/710157">Apple forums: PWA data persistence</a> · <a href="https://mjtsai.com/blog/2020/03/26/safari-13-1-third-party-cookie-blocking-and-7-day-script-writeable-storage/">Safari 7-day storage cap</a></li>
+<li><a href="https://developer.apple.com/app-store/parental-gates/">Apple: parental gates in kids apps</a></li>
+<li><a href="https://ospi.k12.wa.us/sites/default/files/2022-12/mathstandards_grade2.pdf">Grade 2 math standards (WA OSPI)</a> · <a href="https://2lic-ru.gosuslugi.ru/netcat_files/32/315/RP_matematika_2_klass_2023_24.pdf">Рабочая программа, математика 2 класс</a> · <a href="https://www.orizzontescuola.it/la-matematica-in-classe-seconda-della-scuola-primaria-un-esempio-di-progettazione/">Orizzonte Scuola: matematica in classe seconda</a></li>
+</ul>
+</main>
